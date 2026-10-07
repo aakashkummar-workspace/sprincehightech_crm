@@ -17,8 +17,8 @@ export default function PageHeader({ path, title, subtitle, action, showBack = t
         {showBack && <BackButton />}
         <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${c.solid}`} />
         <div className="min-w-0">
-          <h1 className="text-lg font-bold text-gray-900 sm:text-xl">{title}</h1>
-          {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+          <h1 className="text-lg font-bold text-gray-900 sm:text-xl dark:text-gray-100">{title}</h1>
+          {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
         </div>
       </div>
       {action && <div className="shrink-0">{action}</div>}

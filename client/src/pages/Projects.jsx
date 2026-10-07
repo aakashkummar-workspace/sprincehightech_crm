@@ -55,8 +55,8 @@ export default function Projects() {
   const projectRow = (p) => (
     <RowLink key={p.id} onClick={() => navigate(`/projects/${p.id}`)}>
       <div className="min-w-0">
-        <div className="truncate font-medium text-gray-900">{p.client}</div>
-        <div className="text-xs text-gray-500">{p.site || 'No site'}</div>
+        <div className="truncate font-medium text-gray-900 dark:text-gray-100">{p.client}</div>
+        <div className="text-xs text-gray-500 dark:text-gray-400">{p.site || 'No site'}</div>
       </div>
       <StatusBadge status={p.work_status} />
     </RowLink>
@@ -96,7 +96,7 @@ export default function Projects() {
       />
 
       {filtered.length === 0 ? (
-        <div className="card text-sm text-gray-500">
+        <div className="card text-sm text-gray-500 dark:text-gray-400">
           {projects.length === 0 ? 'No projects yet.' : 'No projects match the current filters.'}
         </div>
       ) : (
@@ -105,18 +105,18 @@ export default function Projects() {
             <Link key={p.id} to={`/projects/${p.id}`} className="card block transition-shadow hover:shadow-lg">
               <div className="mb-2 flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <div className="truncate text-sm font-semibold text-gray-900">{p.client}</div>
-                  <div className="text-xs text-gray-500">{p.site || 'No site'} · {p.work_order || 'No work order'}</div>
+                  <div className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">{p.client}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">{p.site || 'No site'} · {p.work_order || 'No work order'}</div>
                 </div>
                 <StatusBadge status={p.work_status} />
               </div>
 
               <div className="mb-3">
-                <div className="mb-1 flex items-center justify-between text-xs text-gray-500">
+                <div className="mb-1 flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                   <span>Progress</span>
-                  <span className="font-medium text-gray-700">{p.progress_percent}%</span>
+                  <span className="font-medium text-gray-700 dark:text-gray-300">{p.progress_percent}%</span>
                 </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/50">
+                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/50 dark:bg-white/10">
                   <div
                     className="h-full rounded-full bg-sky-500"
                     style={{ width: `${Math.min(100, p.progress_percent)}%` }}
@@ -140,7 +140,7 @@ export default function Projects() {
       {drilldown && (
         <Modal title={drilldown.title} onClose={() => setDrilldown(null)}>
           {drilldown.rows.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">No records.</p>
+            <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">No records.</p>
           ) : (
             <div className="space-y-1.5">{drilldown.rows}</div>
           )}

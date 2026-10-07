@@ -355,6 +355,21 @@ app.post('/api/invoices', authenticate, (req, res) => {
   invoices.push(inv);
   res.status(201).json(inv);
 });
+app.patch('/api/invoices/:id', authenticate, (req, res) => {
+  const inv = invoices.find((x) => x.id === req.params.id);
+  if (!inv) return res.status(404).json({ error: 'Invoice not found' });
+  const fields = [
+    'gstin', 'invoice_number', 'invoice_date', 'customer', 'taxable_value',
+    'cgst', 'sgst', 'igst', 'payment_status', 'gst_filing_status', 'due_date',
+  ];
+  for (const f of fields) {
+    if (req.body[f] !== undefined) inv[f] = req.body[f];
+  }
+  if (['taxable_value', 'cgst', 'sgst', 'igst'].some((f) => req.body[f] !== undefined)) {
+    inv.total_amount = Number(inv.taxable_value) + Number(inv.cgst) + Number(inv.sgst) + Number(inv.igst);
+  }
+  res.json(inv);
+});
 
 // ---------------------------------------------------------------------
 // Daily Work Updates

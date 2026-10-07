@@ -84,7 +84,7 @@ export default function Tenders() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="card grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {error && <div className="sm:col-span-2 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+          {error && <div className="sm:col-span-2 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400">{error}</div>}
           <FormField label="Tender ID" value={form.tender_code} onChange={(v) => setForm({ ...form, tender_code: v })} required />
           <FormField label="Organisation" value={form.organisation} onChange={(v) => setForm({ ...form, organisation: v })} required />
           <FormField label="Tender Name" value={form.tender_name} onChange={(v) => setForm({ ...form, tender_name: v })} required className="sm:col-span-2" />
@@ -96,11 +96,11 @@ export default function Tenders() {
           <FormField label="Submission Date" type="date" value={form.submission_date} onChange={(v) => setForm({ ...form, submission_date: v })} />
           <FormField label="Opening Date" type="date" value={form.opening_date} onChange={(v) => setForm({ ...form, opening_date: v })} />
           <div>
-            <label className="block text-sm font-medium text-gray-700">Region</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Region</label>
             <select
               value={form.region}
               onChange={(e) => setForm({ ...form, region: e.target.value })}
-              className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
             >
               <option value="">Select region</option>
               <option value="korba">Korba</option>
@@ -125,7 +125,7 @@ export default function Tenders() {
       />
 
       {filtered.length === 0 ? (
-        <div className="card text-sm text-gray-500">
+        <div className="card text-sm text-gray-500 dark:text-gray-400">
           {tenders.length === 0 ? 'No tenders yet.' : 'No tenders match the current filters.'}
         </div>
       ) : (
@@ -134,14 +134,14 @@ export default function Tenders() {
             <Link key={t.id} to={`/tenders/${t.id}`} className="card block transition-shadow hover:shadow-lg">
               <div className="mb-2 flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <div className="truncate text-sm font-semibold text-gray-900">{t.tender_name}</div>
-                  <div className="text-xs text-gray-500">{t.tender_code} · {t.organisation}</div>
+                  <div className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">{t.tender_name}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">{t.tender_code} · {t.organisation}</div>
                 </div>
                 <StatusBadge status={t.status} />
               </div>
 
               {t.work_description && (
-                <p className="mb-3 line-clamp-2 text-xs text-gray-500">{t.work_description}</p>
+                <p className="mb-3 line-clamp-2 text-xs text-gray-500 dark:text-gray-400">{t.work_description}</p>
               )}
 
               <dl className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">

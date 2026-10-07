@@ -24,8 +24,8 @@ export default function Dashboard() {
       .catch((err) => setError(err.response?.data?.error || 'Failed to load dashboard'));
   }, []);
 
-  if (error) return <div className="card text-sm text-red-700">{error}</div>;
-  if (!data) return <div className="text-sm text-gray-500">Loading dashboard…</div>;
+  if (error) return <div className="card text-sm text-red-700 dark:text-red-400">{error}</div>;
+  if (!data) return <div className="text-sm text-gray-500 dark:text-gray-400">Loading dashboard…</div>;
 
   const won = data.won_lost_tenders.find((t) => t.status === 'won')?.count || 0;
   const lost = data.won_lost_tenders.find((t) => t.status === 'lost')?.count || 0;
@@ -61,8 +61,8 @@ export default function Dashboard() {
       row: (t) => (
         <RowLink key={t.id} onClick={() => navigate(`/tenders/${t.id}`)}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{t.tender_name}</div>
-            <div className="text-xs text-gray-500">{t.tender_code} · {t.organisation}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{t.tender_name}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{t.tender_code} · {t.organisation}</div>
           </div>
           <StatusBadge status={t.status} />
         </RowLink>
@@ -77,8 +77,8 @@ export default function Dashboard() {
       row: (t) => (
         <RowLink key={t.id} onClick={() => navigate(`/tenders/${t.id}`)}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{t.tender_name}</div>
-            <div className="text-xs text-gray-500">{t.tender_code} · {t.organisation}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{t.tender_name}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{t.tender_code} · {t.organisation}</div>
           </div>
           <StatusBadge status={t.status} />
         </RowLink>
@@ -93,8 +93,8 @@ export default function Dashboard() {
       row: (p) => (
         <RowLink key={p.id} onClick={() => navigate(`/projects/${p.id}`)}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{p.client}</div>
-            <div className="text-xs text-gray-500">{p.site} · {currency(p.project_value)}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{p.client}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{p.site} · {currency(p.project_value)}</div>
           </div>
           <StatusBadge status={p.work_status} />
         </RowLink>
@@ -109,10 +109,10 @@ export default function Dashboard() {
       row: (p) => (
         <RowLink key={p.id} onClick={() => navigate(`/projects/${p.id}`)}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{p.client}</div>
-            <div className="text-xs text-gray-500">{p.site}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{p.client}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{p.site}</div>
           </div>
-          <span className="font-semibold text-gray-900">{currency(p.project_value)}</span>
+          <span className="font-semibold text-gray-900 dark:text-gray-100">{currency(p.project_value)}</span>
         </RowLink>
       ),
     },
@@ -127,10 +127,10 @@ export default function Dashboard() {
       row: (a) => (
         <RowLink key={a.id} onClick={() => navigate('/subcontractors')}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{a.assigned_work}</div>
-            <div className="text-xs text-gray-500">{a.client} · {a.site}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{a.assigned_work}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{a.client} · {a.site}</div>
           </div>
-          <span className="text-sm text-gray-600">{a.work_progress_percent}%</span>
+          <span className="text-sm text-gray-600 dark:text-gray-300">{a.work_progress_percent}%</span>
         </RowLink>
       ),
     },
@@ -145,10 +145,10 @@ export default function Dashboard() {
       row: (a) => (
         <RowLink key={a.id} onClick={() => navigate('/subcontractors')}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{a.assigned_work}</div>
-            <div className="text-xs text-gray-500">{a.client} · {a.site}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{a.assigned_work}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{a.client} · {a.site}</div>
           </div>
-          <span className="font-semibold text-gray-900">{currency(a.balance)}</span>
+          <span className="font-semibold text-gray-900 dark:text-gray-100">{currency(a.balance)}</span>
         </RowLink>
       ),
     },
@@ -163,8 +163,8 @@ export default function Dashboard() {
       row: (a) => (
         <RowLink key={a.id} onClick={() => navigate('/subcontractors')}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{a.assigned_work}</div>
-            <div className="text-xs text-gray-500">{a.client} · {a.site}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{a.assigned_work}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{a.client} · {a.site}</div>
           </div>
           <StatusBadge status="pending" />
         </RowLink>
@@ -179,10 +179,10 @@ export default function Dashboard() {
       row: (e) => (
         <RowLink key={e.id} onClick={() => navigate('/employees')}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{e.full_name}</div>
-            <div className="text-xs text-gray-500">{e.designation} · {e.site}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{e.full_name}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{e.designation} · {e.site}</div>
           </div>
-          <span className="text-sm text-gray-600">{currency(e.base_salary)}</span>
+          <span className="text-sm text-gray-600 dark:text-gray-300">{currency(e.base_salary)}</span>
         </RowLink>
       ),
     },
@@ -195,10 +195,10 @@ export default function Dashboard() {
       row: (r) => (
         <RowLink key={r.id} onClick={() => navigate('/employees')}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{r.full_name}</div>
-            <div className="text-xs text-gray-500">{r.period_month}/{r.period_year}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{r.full_name}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{r.period_month}/{r.period_year}</div>
           </div>
-          <span className="font-semibold text-gray-900">{currency(r.net_salary)}</span>
+          <span className="font-semibold text-gray-900 dark:text-gray-100">{currency(r.net_salary)}</span>
         </RowLink>
       ),
     },
@@ -211,11 +211,11 @@ export default function Dashboard() {
       row: (i) => (
         <RowLink key={i.id} onClick={() => navigate('/finance')}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{i.invoice_number}</div>
-            <div className="text-xs text-gray-500">{i.customer} · {formatDate(i.invoice_date)}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{i.invoice_number}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{i.customer} · {formatDate(i.invoice_date)}</div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-gray-900">{currency(i.total_amount)}</span>
+            <span className="font-semibold text-gray-900 dark:text-gray-100">{currency(i.total_amount)}</span>
             <StatusBadge status={i.payment_status} />
           </div>
         </RowLink>
@@ -227,10 +227,10 @@ export default function Dashboard() {
       row: (i) => (
         <RowLink key={i.id} onClick={() => navigate('/finance')}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{i.invoice_number}</div>
-            <div className="text-xs text-gray-500">{i.customer} · {formatDate(i.invoice_date)}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{i.invoice_number}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{i.customer} · {formatDate(i.invoice_date)}</div>
           </div>
-          <span className="font-semibold text-gray-900">{currency(i.total_amount)}</span>
+          <span className="font-semibold text-gray-900 dark:text-gray-100">{currency(i.total_amount)}</span>
         </RowLink>
       ),
     },
@@ -245,10 +245,10 @@ export default function Dashboard() {
       row: (a) => (
         <RowLink key={a.id} onClick={() => navigate('/subcontractors')}>
           <div className="min-w-0">
-            <div className="truncate font-medium text-gray-900">{a.assigned_work}</div>
-            <div className="text-xs text-gray-500">{a.client} · {a.site}</div>
+            <div className="truncate font-medium text-gray-900 dark:text-gray-100">{a.assigned_work}</div>
+            <div className="text-xs text-gray-500 dark:text-gray-400">{a.client} · {a.site}</div>
           </div>
-          <span className="font-semibold text-gray-900">{currency(a.paid_amount)}</span>
+          <span className="font-semibold text-gray-900 dark:text-gray-100">{currency(a.paid_amount)}</span>
         </RowLink>
       ),
     },
@@ -275,8 +275,8 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-sm text-gray-500">Company-wide overview across tenders, projects, people and finance. Click a card for details.</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Dashboard</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">Company-wide overview across tenders, projects, people and finance. Click a card for details.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -293,9 +293,9 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="card">
-          <h2 className="mb-2 text-sm font-semibold text-gray-700">Upcoming Tender Deadlines</h2>
+          <h2 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">Upcoming Tender Deadlines</h2>
           {data.upcoming_tender_deadlines.length === 0 ? (
-            <p className="text-sm text-gray-500">No upcoming deadlines.</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">No upcoming deadlines.</p>
           ) : (
             <ul className="space-y-1.5 text-sm">
               {[...data.upcoming_tender_deadlines]
@@ -320,12 +320,12 @@ export default function Dashboard() {
         </div>
 
         <div className="card">
-          <h2 className="mb-2 text-sm font-semibold text-gray-700">GST Filing Status</h2>
+          <h2 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">GST Filing Status</h2>
           <ul className="space-y-1 text-sm">
             {data.gst_filing_status.map((g) => (
               <li key={g.gst_filing_status} className="flex justify-between">
                 <span className="capitalize">{g.gst_filing_status.replace('_', ' ')}</span>
-                <span className="text-gray-500">{g.count}</span>
+                <span className="text-gray-500 dark:text-gray-400">{g.count}</span>
               </li>
             ))}
           </ul>
@@ -335,26 +335,14 @@ export default function Dashboard() {
       {active && (
         <Modal title={active.title} onClose={closeDrilldown}>
           {drilldownLoading ? (
-            <p className="py-6 text-center text-sm text-gray-500">Loading…</p>
+            <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">Loading…</p>
           ) : !drilldownData || drilldownData.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">No records.</p>
+            <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">No records.</p>
           ) : (
             <div className="space-y-1.5">{drilldownData.map(active.row)}</div>
           )}
         </Modal>
       )}
-
-      <p className="pt-2 text-center text-xs text-gray-400">
-        Developed by{' '}
-        <a
-          href="https://sirahdigital.in/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="font-bold text-gray-500 hover:text-violet-600"
-        >
-          SIRAH DIGITAL
-        </a>
-      </p>
     </div>
   );
 }

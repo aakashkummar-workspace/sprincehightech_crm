@@ -45,7 +45,7 @@ export default function TenderDetail() {
     }
   }
 
-  if (!tender) return <div className="text-sm text-gray-500">Loading…</div>;
+  if (!tender) return <div className="text-sm text-gray-500 dark:text-gray-400">Loading…</div>;
 
   const linearStages = ['new', 'under_evaluation', 'bid_preparing', 'submitted'];
   const currentIdx = linearStages.indexOf(tender.status);
@@ -57,17 +57,17 @@ export default function TenderDetail() {
           <BackButton />
           <div>
             <h1 className="text-xl font-semibold">{tender.tender_name}</h1>
-            <p className="text-sm text-gray-500">{tender.tender_code} · {tender.organisation}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{tender.tender_code} · {tender.organisation}</p>
           </div>
         </div>
         <StatusBadge status={tender.status} />
       </div>
 
-      {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+      {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400">{error}</div>}
 
       {/* Workflow stepper */}
       <div className="card">
-        <h2 className="mb-3 text-sm font-semibold text-gray-700">Tender Status Workflow</h2>
+        <h2 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">Tender Status Workflow</h2>
         <div className="flex items-center gap-2 flex-wrap">
           {linearStages.map((stage, idx) => (
             <button
@@ -77,13 +77,13 @@ export default function TenderDetail() {
               className={`rounded-full px-3 py-1.5 text-xs font-medium ${
                 idx <= currentIdx && currentIdx >= 0
                   ? 'bg-violet-600 text-white'
-                  : 'bg-gray-100 text-gray-500'
+                  : 'bg-gray-100 text-gray-500 dark:bg-white/10 dark:text-gray-400'
               } disabled:opacity-50`}
             >
               {STAGE_LABELS[stage]}
             </button>
           ))}
-          <span className="text-gray-300">→</span>
+          <span className="text-gray-300 dark:text-gray-600">→</span>
           <button
             onClick={() => updateStatus('won')}
             className="rounded-full bg-green-600 px-3 py-1.5 text-xs font-medium text-white"
@@ -109,16 +109,16 @@ export default function TenderDetail() {
         <Detail label="Opening Date" value={tender.opening_date ? new Date(tender.opening_date).toLocaleDateString('en-IN') : '—'} />
         <Detail label="Region" value={tender.region || '—'} />
         <div className="sm:col-span-2">
-          <div className="text-xs font-medium uppercase tracking-wide text-gray-500">Work Description</div>
-          <p className="mt-1 text-sm text-gray-700">{tender.work_description || '—'}</p>
+          <div className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">Work Description</div>
+          <p className="mt-1 text-sm text-gray-700 dark:text-gray-300">{tender.work_description || '—'}</p>
         </div>
       </div>
 
       {/* Documents */}
       <div className="card">
-        <h2 className="mb-2 text-sm font-semibold text-gray-700">Documents</h2>
+        <h2 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">Documents</h2>
         {tender.documents.length === 0 ? (
-          <p className="text-sm text-gray-500">No documents uploaded.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">No documents uploaded.</p>
         ) : (
           <ul className="space-y-1 text-sm">
             {tender.documents.map((d) => (
@@ -131,8 +131,8 @@ export default function TenderDetail() {
       {tender.status === 'won' && (
         <div className="card flex items-center justify-between">
           <div>
-            <div className="text-sm font-semibold text-gray-700">Ready to start work</div>
-            <p className="text-sm text-gray-500">Convert this won tender into a Project.</p>
+            <div className="text-sm font-semibold text-gray-700 dark:text-gray-300">Ready to start work</div>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Convert this won tender into a Project.</p>
           </div>
           <button onClick={handleConvert} disabled={converting} className="btn btn-violet">
             {converting ? 'Converting…' : 'Convert to Project'}
@@ -146,8 +146,8 @@ export default function TenderDetail() {
 function Detail({ label, value }) {
   return (
     <div>
-      <div className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</div>
-      <div className="mt-1 text-sm text-gray-900 capitalize">{value}</div>
+      <div className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">{label}</div>
+      <div className="mt-1 text-sm text-gray-900 capitalize dark:text-gray-100">{value}</div>
     </div>
   );
 }

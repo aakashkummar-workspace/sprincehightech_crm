@@ -4,11 +4,11 @@ import { authenticate, requireRole } from '../../middleware/auth.js';
 
 const router = Router();
 
-// POST /api/daily-work-updates  (site_supervisor enters; project_manager also may)
+// POST /api/daily-work-updates  (site_supervisor/project_manager enter day-to-day; director can too)
 router.post(
   '/daily-work-updates',
   authenticate,
-  requireRole('site_supervisor', 'project_manager'),
+  requireRole('site_supervisor', 'project_manager', 'director'),
   async (req, res) => {
     const { project_id, site, work_date, work_done, manpower_deployed, materials_used, photo_url } = req.body;
     if (!project_id || !work_date || !work_done) {

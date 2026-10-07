@@ -72,6 +72,19 @@ export default function Finance() {
     }
   }
 
+  async function updateStatus(id, field, value) {
+    setError('');
+    // Optimistic update so the dropdown feels instant; reconciled by the
+    // PATCH response (or reverted via reload on failure).
+    setInvoices((prev) => prev.map((inv) => (inv.id === id ? { ...inv, [field]: value } : inv)));
+    try {
+      await api.patch(`/invoices/${id}`, { [field]: value });
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to update status');
+      load();
+    }
+  }
+
   const totalRevenue = invoices.reduce((a, i) => a + Number(i.total_amount || 0), 0);
   const receivableInvoices = invoices.filter((i) => i.payment_status !== 'paid');
   const receivables = receivableInvoices.reduce((a, i) => a + Number(i.total_amount || 0), 0);
@@ -79,13 +92,13 @@ export default function Finance() {
   const notFiledInvoices = invoices.filter((i) => i.gst_filing_status !== 'filed');
 
   const invoiceRow = (inv) => (
-    <div key={inv.id} className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/40 bg-white/40 px-3 py-2 text-sm">
+    <div key={inv.id} className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/40 bg-white/40 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/10">
       <div className="min-w-0">
-        <div className="truncate font-medium text-gray-900">{inv.invoice_number}</div>
-        <div className="text-xs text-gray-500">{inv.customer} · {formatDate(inv.invoice_date)}</div>
+        <div className="truncate font-medium text-gray-900 dark:text-gray-100">{inv.invoice_number}</div>
+        <div className="text-xs text-gray-500 dark:text-gray-400">{inv.customer} · {formatDate(inv.invoice_date)}</div>
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-sm text-gray-600">{currency(inv.total_amount)}</span>
+        <span className="text-sm text-gray-600 dark:text-gray-300">{currency(inv.total_amount)}</span>
         <StatusBadge status={inv.payment_status} />
       </div>
     </div>
@@ -138,7 +151,7 @@ export default function Finance() {
 
       {showForm && (
         <form onSubmit={handleCreate} className="card grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {error && <div className="sm:col-span-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+          {error && <div className="sm:col-span-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400">{error}</div>}
           <FormField label="Invoice Number" value={form.invoice_number} onChange={(v) => setForm({ ...form, invoice_number: v })} required />
           <FormField label="Invoice Date" type="date" value={form.invoice_date} onChange={(v) => setForm({ ...form, invoice_date: v })} required />
           <FormField label="Customer" value={form.customer} onChange={(v) => setForm({ ...form, customer: v })} required />
@@ -151,14 +164,14 @@ export default function Finance() {
               checked={form.is_inter_state}
               onChange={(e) => setForm({ ...form, is_inter_state: e.target.checked })}
             />
-            <label className="text-sm text-gray-700">Inter-state (IGST applies)</label>
+            <label className="text-sm text-gray-700 dark:text-gray-300">Inter-state (IGST applies)</label>
           </div>
           <div className="sm:col-span-3 flex items-center gap-3">
             <button type="button" className="btn btn-secondary" onClick={handleCalculate}>
               Calculate GST (18%)
             </button>
             {calc && (
-              <span className="rounded-full bg-white/60 px-3 py-1.5 text-xs text-gray-700">
+              <span className="rounded-full bg-white/60 px-3 py-1.5 text-xs text-gray-700 dark:bg-white/10 dark:text-gray-300">
                 CGST {currency(calc.cgst)} · SGST {currency(calc.sgst)} · IGST {currency(calc.igst)} ·
                 <strong> Total {currency(calc.total_amount)}</strong>
               </span>
@@ -181,7 +194,7 @@ export default function Finance() {
       />
 
       {filtered.length === 0 ? (
-        <div className="card text-sm text-gray-500">
+        <div className="card text-sm text-gray-500 dark:text-gray-400">
           {invoices.length === 0 ? 'No invoices yet.' : 'No invoices match the current filters.'}
         </div>
       ) : (
@@ -190,16 +203,24 @@ export default function Finance() {
             <div key={inv.id} className="card">
               <div className="mb-2 flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <div className="truncate text-sm font-semibold text-gray-900">{inv.invoice_number}</div>
-                  <div className="text-xs text-gray-500">{inv.customer} · {formatDate(inv.invoice_date)}</div>
+                  <div className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">{inv.invoice_number}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">{inv.customer} · {formatDate(inv.invoice_date)}</div>
                 </div>
-                <div className="flex shrink-0 flex-col items-end gap-1">
-                  <StatusBadge status={inv.payment_status} />
-                  <StatusBadge status={inv.gst_filing_status} />
+                <div className="flex shrink-0 flex-col items-end gap-1.5">
+                  <StatusSelect
+                    value={inv.payment_status}
+                    options={PAYMENT_STATUS_OPTIONS}
+                    onChange={(v) => updateStatus(inv.id, 'payment_status', v)}
+                  />
+                  <StatusSelect
+                    value={inv.gst_filing_status}
+                    options={GST_STATUS_OPTIONS}
+                    onChange={(v) => updateStatus(inv.id, 'gst_filing_status', v)}
+                  />
                 </div>
               </div>
 
-              <div className="mb-3 text-lg font-bold text-gray-900">{currency(inv.total_amount)}</div>
+              <div className="mb-3 text-lg font-bold text-gray-900 dark:text-gray-100">{currency(inv.total_amount)}</div>
 
               <dl className="grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">
                 <DetailField label="GSTIN" value={inv.gstin || '—'} wide />
@@ -217,12 +238,33 @@ export default function Finance() {
       {drilldown && (
         <Modal title={drilldown.title} onClose={() => setDrilldown(null)}>
           {drilldown.rows.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">No records.</p>
+            <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">No records.</p>
           ) : (
             <div className="space-y-1.5">{drilldown.rows}</div>
           )}
         </Modal>
       )}
     </div>
+  );
+}
+
+// A <select> styled to look like a status-badge pill, so changing a status
+// in place doesn't break the card's visual language. Stops the click from
+// bubbling to the card (no row-level onClick here, but kept defensive in
+// case one is added later).
+function StatusSelect({ value, options, onChange }) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      onClick={(e) => e.stopPropagation()}
+      className={`status-badge status-${value} cursor-pointer appearance-none border-0 bg-transparent bg-[length:0] pr-1 capitalize outline-none`}
+    >
+      {options.map((opt) => (
+        <option key={opt.value} value={opt.value} className="bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100">
+          {opt.label}
+        </option>
+      ))}
+    </select>
   );
 }

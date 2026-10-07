@@ -34,7 +34,7 @@ export default function ProjectDetail() {
     }
   }
 
-  if (!project) return <div className="text-sm text-gray-500">Loading…</div>;
+  if (!project) return <div className="text-sm text-gray-500 dark:text-gray-400">Loading…</div>;
 
   return (
     <div className="space-y-6">
@@ -43,7 +43,7 @@ export default function ProjectDetail() {
           <BackButton />
           <div>
             <h1 className="text-xl font-semibold">{project.client}</h1>
-            <p className="text-sm text-gray-500">{project.site} · {project.work_order || 'No work order'}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{project.site} · {project.work_order || 'No work order'}</p>
           </div>
         </div>
         <StatusBadge status={project.work_status} />
@@ -62,23 +62,23 @@ export default function ProjectDetail() {
       {/* Subcontractors — Project A style breakdown */}
       <div className="card">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-gray-700">Subcontractors on this Project</h2>
+          <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Subcontractors on this Project</h2>
           <button className="btn btn-secondary" onClick={() => setShowAssignForm((v) => !v)}>
             {showAssignForm ? 'Cancel' : 'Add Subcontractor'}
           </button>
         </div>
 
-        {error && <div className="mb-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+        {error && <div className="mb-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400">{error}</div>}
 
         {showAssignForm && (
           <form onSubmit={handleAssign} className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Subcontractor</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Subcontractor</label>
               <select
                 required
                 value={assignForm.subcontractor_id}
                 onChange={(e) => setAssignForm({ ...assignForm, subcontractor_id: e.target.value })}
-                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
               >
                 <option value="">Select…</option>
                 {subcontractors.map((s) => (
@@ -87,22 +87,22 @@ export default function ProjectDetail() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Assigned Work</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Assigned Work</label>
               <input
                 required
                 placeholder="e.g. Civil Work, Painting"
                 value={assignForm.assigned_work}
                 onChange={(e) => setAssignForm({ ...assignForm, assigned_work: e.target.value })}
-                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Contract Value (₹)</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contract Value (₹)</label>
               <input
                 type="number"
                 value={assignForm.contract_value}
                 onChange={(e) => setAssignForm({ ...assignForm, contract_value: e.target.value })}
-                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
               />
             </div>
             <div className="sm:col-span-3">
@@ -112,12 +112,12 @@ export default function ProjectDetail() {
         )}
 
         {project.subcontractor_assignments.length === 0 ? (
-          <p className="text-sm text-gray-500">No subcontractors assigned yet.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">No subcontractors assigned yet.</p>
         ) : (
           <div className="overflow-x-auto scrollbar-hide">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
+            <table className="min-w-full divide-y divide-gray-200 text-sm dark:divide-white/10">
               <thead>
-                <tr className="text-left text-gray-500">
+                <tr className="text-left text-gray-500 dark:text-gray-400">
                   <th className="py-2 pr-4">Work</th>
                   <th className="py-2 pr-4">Subcontractor</th>
                   <th className="py-2 pr-4">Contract Value</th>
@@ -132,7 +132,7 @@ export default function ProjectDetail() {
                   <th className="py-2">Documents</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-100 dark:divide-white/10">
                 {project.subcontractor_assignments.map((a) => (
                   <tr key={a.id}>
                     <td className="py-2 pr-4">{a.assigned_work}</td>
@@ -161,18 +161,18 @@ export default function ProjectDetail() {
 
       {/* Recent daily work updates */}
       <div className="card">
-        <h2 className="mb-2 text-sm font-semibold text-gray-700">Recent Daily Work Updates</h2>
+        <h2 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">Recent Daily Work Updates</h2>
         {project.recent_daily_updates.length === 0 ? (
-          <p className="text-sm text-gray-500">No updates logged yet.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">No updates logged yet.</p>
         ) : (
           <ul className="space-y-2 text-sm">
             {project.recent_daily_updates.map((u) => (
-              <li key={u.id} className="border-b border-gray-100 pb-2 last:border-0">
+              <li key={u.id} className="border-b border-gray-100 pb-2 last:border-0 dark:border-white/10">
                 <div className="flex justify-between">
                   <span className="font-medium">{new Date(u.work_date).toLocaleDateString('en-IN')}</span>
-                  <span className="text-gray-500">{u.manpower_deployed} workers</span>
+                  <span className="text-gray-500 dark:text-gray-400">{u.manpower_deployed} workers</span>
                 </div>
-                <p className="text-gray-700">{u.work_done}</p>
+                <p className="text-gray-700 dark:text-gray-300">{u.work_done}</p>
               </li>
             ))}
           </ul>
@@ -185,8 +185,8 @@ export default function ProjectDetail() {
 function Detail({ label, value }) {
   return (
     <div>
-      <div className="text-xs font-medium uppercase tracking-wide text-gray-500">{label}</div>
-      <div className="mt-1 text-sm text-gray-900">{value}</div>
+      <div className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">{label}</div>
+      <div className="mt-1 text-sm text-gray-900 dark:text-gray-100">{value}</div>
     </div>
   );
 }

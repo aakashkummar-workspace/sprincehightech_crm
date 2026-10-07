@@ -11,13 +11,13 @@ export default function Modal({ title, onClose, children }) {
 
   return (
     <div className="fixed inset-0 z-[60] flex items-start justify-center overflow-y-auto scrollbar-hide p-4 pt-16 sm:pt-24">
-      <div className="fixed inset-0 bg-gray-900/30 backdrop-blur-sm" onClick={onClose} />
+      <div className="fixed inset-0 bg-gray-900/30 backdrop-blur-sm dark:bg-black/50" onClick={onClose} />
       <div className="glass relative w-full max-w-2xl rounded-2xl p-5">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-gray-900">{title}</h2>
+          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{title}</h2>
           <button
             onClick={onClose}
-            className="rounded-full p-1.5 text-gray-500 hover:bg-white/50"
+            className="rounded-full p-1.5 text-gray-500 hover:bg-white/50 dark:text-gray-400 dark:hover:bg-white/10"
             aria-label="Close"
           >
             <CloseIcon />

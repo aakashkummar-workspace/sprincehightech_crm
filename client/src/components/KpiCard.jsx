@@ -1,12 +1,12 @@
-// Richer, more saturated tint rotation so icon tiles read as colorful glass
-// chips rather than washed-out pastel squares.
+// Gold/red tint rotation matching the S Prince Hightech logo palette
+// (crown-red + gold coin) instead of a generic rainbow cycle.
 const TINTS = [
-  { grad: 'from-violet-400 to-indigo-500', glow: 'shadow-violet-500/30' },
-  { grad: 'from-sky-400 to-blue-500', glow: 'shadow-sky-500/30' },
-  { grad: 'from-emerald-400 to-teal-500', glow: 'shadow-emerald-500/30' },
   { grad: 'from-amber-400 to-orange-500', glow: 'shadow-amber-500/30' },
-  { grad: 'from-rose-400 to-pink-500', glow: 'shadow-rose-500/30' },
-  { grad: 'from-cyan-400 to-sky-500', glow: 'shadow-cyan-500/30' },
+  { grad: 'from-red-400 to-red-600', glow: 'shadow-red-500/30' },
+  { grad: 'from-yellow-400 to-amber-500', glow: 'shadow-yellow-500/30' },
+  { grad: 'from-orange-400 to-red-500', glow: 'shadow-orange-500/30' },
+  { grad: 'from-amber-500 to-red-600', glow: 'shadow-amber-600/30' },
+  { grad: 'from-red-400 to-orange-500', glow: 'shadow-red-400/30' },
 ];
 
 export default function KpiCard({ label, value, hint, icon, tintIndex = 0, onClick }) {
@@ -20,9 +20,9 @@ export default function KpiCard({ label, value, hint, icon, tintIndex = 0, onCli
       <div className={`icon-tile mb-3 bg-gradient-to-br ${tint.grad} text-white shadow-lg ${tint.glow}`}>
         {icon || <DefaultIcon />}
       </div>
-      <div className="text-sm font-semibold text-gray-800">{label}</div>
-      <div className="mt-1 text-xl font-bold text-gray-900">{value}</div>
-      {hint && <div className="mt-1 text-xs text-gray-500">{hint}</div>}
+      <div className="text-sm font-semibold text-gray-800 dark:text-gray-200">{label}</div>
+      <div className="mt-1 text-xl font-bold text-gray-900 dark:text-gray-100">{value}</div>
+      {hint && <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</div>}
     </Tag>
   );
 }

@@ -16,7 +16,7 @@ export default function SubcontractorDetail() {
   }
   useEffect(load, [id]);
 
-  if (!sub) return <div className="text-sm text-gray-500">Loading…</div>;
+  if (!sub) return <div className="text-sm text-gray-500 dark:text-gray-400">Loading…</div>;
 
   const totalPayable = sub.assignments.reduce((acc, a) => acc + Number(a.balance), 0);
   const workPending = sub.assignments.filter((a) => Number(a.work_progress_percent) < 100).length;
@@ -28,7 +28,7 @@ export default function SubcontractorDetail() {
         <BackButton />
         <div>
           <h1 className="text-xl font-semibold">{sub.company_name}</h1>
-          <p className="text-sm text-gray-500">{sub.contact_name} · {sub.contact_phone} · {sub.contact_email}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{sub.contact_name} · {sub.contact_phone} · {sub.contact_email}</p>
         </div>
       </div>
 
@@ -40,15 +40,15 @@ export default function SubcontractorDetail() {
       </div>
 
       <div className="card overflow-x-auto scrollbar-hide">
-        <h2 className="mb-3 text-sm font-semibold text-gray-700">
+        <h2 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
           Work Across Projects ({sub.assignments.length})
         </h2>
         {sub.assignments.length === 0 ? (
-          <p className="text-sm text-gray-500">No project assignments yet.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">No project assignments yet.</p>
         ) : (
-          <table className="min-w-full divide-y divide-gray-200 text-sm">
+          <table className="min-w-full divide-y divide-gray-200 text-sm dark:divide-white/10">
             <thead>
-              <tr className="text-left text-gray-500">
+              <tr className="text-left text-gray-500 dark:text-gray-400">
                 <th className="py-2 pr-4">Project / Site</th>
                 <th className="py-2 pr-4">Work</th>
                 <th className="py-2 pr-4">Contract Value</th>
@@ -63,7 +63,7 @@ export default function SubcontractorDetail() {
                 <th className="py-2">Documents</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-gray-100 dark:divide-white/10">
               {sub.assignments.map((a) => (
                 <tr key={a.id}>
                   <td className="py-2 pr-4">{a.client} — {a.site}</td>

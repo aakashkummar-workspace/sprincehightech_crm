@@ -54,12 +54,12 @@ export default function Employees() {
   const departments = [...new Set(employees.map((e) => e.department).filter(Boolean))];
 
   const empRow = (e) => (
-    <div key={e.id} className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/40 bg-white/40 px-3 py-2 text-sm">
+    <div key={e.id} className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/40 bg-white/40 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/10">
       <div className="min-w-0">
-        <div className="truncate font-medium text-gray-900">{e.full_name}</div>
-        <div className="text-xs text-gray-500">{e.designation || 'No designation'} · {capitalize(e.region)}</div>
+        <div className="truncate font-medium text-gray-900 dark:text-gray-100">{e.full_name}</div>
+        <div className="text-xs text-gray-500 dark:text-gray-400">{e.designation || 'No designation'} · {capitalize(e.region)}</div>
       </div>
-      <span className="text-sm text-gray-600">{currency(e.base_salary)}</span>
+      <span className="text-sm text-gray-600 dark:text-gray-300">{currency(e.base_salary)}</span>
     </div>
   );
 
@@ -110,22 +110,22 @@ export default function Employees() {
           onClick={() => setDrilldown({
             title: 'Employees by Department',
             rows: departments.map((d) => (
-              <div key={d} className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/40 bg-white/40 px-3 py-2 text-sm">
-                <span className="font-medium text-gray-900">{d}</span>
-                <span className="text-sm text-gray-600">{employees.filter((e) => e.department === d).length} employee(s)</span>
+              <div key={d} className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/40 bg-white/40 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/10">
+                <span className="font-medium text-gray-900 dark:text-gray-100">{d}</span>
+                <span className="text-sm text-gray-600 dark:text-gray-300">{employees.filter((e) => e.department === d).length} employee(s)</span>
               </div>
             )),
           })}
         />
       </div>
 
-      <div className="flex gap-2 rounded-full bg-white/50 p-1">
+      <div className="flex gap-2 rounded-full bg-white/50 p-1 dark:bg-white/5">
         {['employees', 'attendance', 'payroll'].map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={`rounded-full px-4 py-1.5 text-sm font-medium capitalize transition-colors ${
-              tab === t ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 hover:bg-white/70'
+              tab === t ? 'bg-emerald-600 text-white shadow-sm' : 'text-gray-600 hover:bg-white/70 dark:text-gray-300 dark:hover:bg-white/10'
             }`}
           >
             {t}
@@ -137,16 +137,16 @@ export default function Employees() {
         <>
           {showForm && (
             <form onSubmit={handleCreate} className="card grid grid-cols-1 gap-3 sm:grid-cols-3">
-              {error && <div className="sm:col-span-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+              {error && <div className="sm:col-span-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400">{error}</div>}
               <FormField label="Full Name" value={form.full_name} onChange={(v) => setForm({ ...form, full_name: v })} required />
               <FormField label="Designation" value={form.designation} onChange={(v) => setForm({ ...form, designation: v })} />
               <FormField label="Department" value={form.department} onChange={(v) => setForm({ ...form, department: v })} />
               <div>
-                <label className="block text-sm font-medium text-gray-700">Region</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Region</label>
                 <select
                   value={form.region}
                   onChange={(e) => setForm({ ...form, region: e.target.value })}
-                  className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+                  className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
                 >
                   <option value="">Select region</option>
                   <option value="korba">Korba</option>
@@ -174,7 +174,7 @@ export default function Employees() {
           />
 
           {filteredEmployees.length === 0 ? (
-            <div className="card text-sm text-gray-500">
+            <div className="card text-sm text-gray-500 dark:text-gray-400">
               {employees.length === 0 ? 'No employees yet.' : 'No employees match the current filters.'}
             </div>
           ) : (
@@ -183,8 +183,8 @@ export default function Employees() {
                 <div key={emp.id} className="card">
                   <div className="mb-2 flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <div className="truncate text-sm font-semibold text-gray-900">{emp.full_name}</div>
-                      <div className="text-xs text-gray-500">{emp.designation || 'No designation'}</div>
+                      <div className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">{emp.full_name}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{emp.designation || 'No designation'}</div>
                     </div>
                     <StatusBadge status={emp.is_active ? 'completed' : 'lost'} />
                   </div>
@@ -209,7 +209,7 @@ export default function Employees() {
       {drilldown && (
         <Modal title={drilldown.title} onClose={() => setDrilldown(null)}>
           {drilldown.rows.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">No records.</p>
+            <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">No records.</p>
           ) : (
             <div className="space-y-1.5">{drilldown.rows}</div>
           )}
@@ -246,23 +246,23 @@ function AttendanceGrid({ employees }) {
     <div className="card space-y-4">
       <div className="flex flex-wrap items-end gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Date</label>
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="mt-1 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm" />
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Date</label>
+          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="mt-1 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Site</label>
-          <input value={site} onChange={(e) => setSite(e.target.value)} className="mt-1 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm" />
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Site</label>
+          <input value={site} onChange={(e) => setSite(e.target.value)} className="mt-1 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100" />
         </div>
         <button className="btn btn-emerald" onClick={handleSave}>Save Attendance</button>
       </div>
 
-      {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
-      {saved && <div className="rounded-xl bg-green-50 px-3 py-2 text-sm text-green-700">Attendance saved.</div>}
+      {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400">{error}</div>}
+      {saved && <div className="rounded-xl bg-green-50 px-3 py-2 text-sm text-green-700 dark:bg-emerald-500/10 dark:text-emerald-400">Attendance saved.</div>}
 
       <div className="overflow-x-auto scrollbar-hide">
-        <table className="min-w-full divide-y divide-white/40 text-sm">
-          <thead className="bg-white/20">
-            <tr className="text-left text-gray-600">
+        <table className="min-w-full divide-y divide-white/40 text-sm dark:divide-white/10">
+          <thead className="bg-white/20 dark:bg-white/5">
+            <tr className="text-left text-gray-600 dark:text-gray-300">
               <th className="py-2 pl-3 pr-4">Employee</th>
               <th className="py-2 pr-4">Present</th>
               <th className="py-2 pr-4">Absent</th>
@@ -270,10 +270,10 @@ function AttendanceGrid({ employees }) {
               <th className="py-2">Leave</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/30">
+          <tbody className="divide-y divide-white/30 dark:divide-white/10">
             {employees.map((emp) => (
               <tr key={emp.id}>
-                <td className="whitespace-nowrap py-2 pl-3 pr-4 font-medium text-gray-800">{emp.full_name}</td>
+                <td className="whitespace-nowrap py-2 pl-3 pr-4 font-medium text-gray-800 dark:text-gray-200">{emp.full_name}</td>
                 {['present', 'absent', 'half_day', 'leave'].map((s) => (
                   <td key={s} className="py-2 pr-4">
                     <input
@@ -350,36 +350,36 @@ function PayrollPanel({ employees }) {
       <div className="card space-y-4">
         <div className="flex flex-wrap items-end gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Employee</label>
-            <select value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} className="mt-1 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Employee</label>
+            <select value={employeeId} onChange={(e) => setEmployeeId(e.target.value)} className="mt-1 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100">
               <option value="">Select…</option>
               {employees.map((e) => <option key={e.id} value={e.id}>{e.full_name}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Month</label>
-            <input type="number" min="1" max="12" value={month} onChange={(e) => setMonth(e.target.value)} className="mt-1 w-20 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm" />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Month</label>
+            <input type="number" min="1" max="12" value={month} onChange={(e) => setMonth(e.target.value)} className="mt-1 w-20 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Year</label>
-            <input type="number" value={year} onChange={(e) => setYear(e.target.value)} className="mt-1 w-24 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm" />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Year</label>
+            <input type="number" value={year} onChange={(e) => setYear(e.target.value)} className="mt-1 w-24 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Advance (₹)</label>
-            <input type="number" value={advance} onChange={(e) => setAdvance(e.target.value)} className="mt-1 w-28 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm" />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Advance (₹)</label>
+            <input type="number" value={advance} onChange={(e) => setAdvance(e.target.value)} className="mt-1 w-28 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Deduction (₹)</label>
-            <input type="number" value={deduction} onChange={(e) => setDeduction(e.target.value)} className="mt-1 w-28 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm" />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Deduction (₹)</label>
+            <input type="number" value={deduction} onChange={(e) => setDeduction(e.target.value)} className="mt-1 w-28 rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100" />
           </div>
           <button className="btn btn-secondary" onClick={handlePreview} disabled={!employeeId}>Preview</button>
         </div>
 
-        {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+        {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400">{error}</div>}
 
         {preview && (
-          <div className="rounded-xl border border-gray-200 bg-white/50 p-4 text-sm">
-            <h3 className="mb-2 font-semibold text-gray-700">Review before confirming</h3>
+          <div className="rounded-xl border border-gray-200 bg-white/50 p-4 text-sm dark:border-white/10 dark:bg-white/5">
+            <h3 className="mb-2 font-semibold text-gray-700 dark:text-gray-300">Review before confirming</h3>
             <dl className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               <DetailField label="Gross Salary" value={currency(preview.gross_salary)} />
               <DetailField label="Advance" value={currency(preview.advance)} />
@@ -389,20 +389,20 @@ function PayrollPanel({ employees }) {
               <DetailField label="Net Salary" value={currency(preview.net_salary)} />
             </dl>
             <button className="btn btn-emerald mt-3" onClick={handleConfirm}>Confirm &amp; Run Payroll</button>
-            {confirmed && <span className="ml-3 text-sm text-green-700">Payroll run saved.</span>}
+            {confirmed && <span className="ml-3 text-sm text-green-700 dark:text-emerald-400">Payroll run saved.</span>}
           </div>
         )}
       </div>
 
       <div className="card">
-        <h2 className="mb-3 text-sm font-semibold text-gray-700">Payroll History &amp; Payment Status</h2>
+        <h2 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">Payroll History &amp; Payment Status</h2>
         {runs.length === 0 ? (
-          <p className="text-sm text-gray-500">No payroll runs yet.</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">No payroll runs yet.</p>
         ) : (
           <div className="overflow-x-auto scrollbar-hide">
-            <table className="min-w-full divide-y divide-white/40 text-sm">
-              <thead className="bg-white/20">
-                <tr className="text-left text-gray-600">
+            <table className="min-w-full divide-y divide-white/40 text-sm dark:divide-white/10">
+              <thead className="bg-white/20 dark:bg-white/5">
+                <tr className="text-left text-gray-600 dark:text-gray-300">
                   <th className="whitespace-nowrap py-2 pl-3 pr-4">Employee</th>
                   <th className="whitespace-nowrap py-2 pr-4">Period</th>
                   <th className="whitespace-nowrap py-2 pr-4">Net Salary</th>
@@ -411,10 +411,10 @@ function PayrollPanel({ employees }) {
                   <th className="py-2"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/30">
+              <tbody className="divide-y divide-white/30 dark:divide-white/10">
                 {runs.map((r) => (
                   <tr key={r.id}>
-                    <td className="whitespace-nowrap py-2 pl-3 pr-4 font-medium text-gray-800">{r.full_name}</td>
+                    <td className="whitespace-nowrap py-2 pl-3 pr-4 font-medium text-gray-800 dark:text-gray-200">{r.full_name}</td>
                     <td className="whitespace-nowrap py-2 pr-4">{r.period_month}/{r.period_year}</td>
                     <td className="whitespace-nowrap py-2 pr-4">{currency(r.net_salary)}</td>
                     <td className="whitespace-nowrap py-2 pr-4"><StatusBadge status={r.payment_status} /></td>

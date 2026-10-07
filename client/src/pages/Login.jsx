@@ -35,18 +35,18 @@ export default function Login() {
           <div className="mb-8 flex items-center gap-3">
             <img src={logo} alt="S Prince Hightech" className="h-11 w-11 shrink-0 object-contain" />
             <div>
-              <h1 className="text-lg font-bold text-gray-900">S Prince Hightech</h1>
-              <p className="text-xs text-gray-500">Management CRM</p>
+              <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">S Prince Hightech</h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Management CRM</p>
             </div>
           </div>
 
-          <h2 className="text-xl font-bold text-gray-900">Choose how you'd like to sign in</h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Choose how you'd like to sign in</h2>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Pick a role below to open its dashboard — this demo build signs you straight in.
           </p>
 
           {error && (
-            <div className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
+            <div className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400">{error}</div>
           )}
 
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -64,10 +64,10 @@ export default function Login() {
                     {isPending ? <Spinner /> : <NavIcon name={account.icon} />}
                   </div>
                   <div className="min-w-0">
-                    <div className="text-sm font-semibold text-gray-900">{ROLE_LABELS[account.role]}</div>
-                    <div className="truncate text-xs text-gray-500">{account.name}</div>
+                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">{ROLE_LABELS[account.role]}</div>
+                    <div className="truncate text-xs text-gray-500 dark:text-gray-400">{account.name}</div>
                     <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                      <span className="text-[11px] text-gray-400">{account.description}</span>
+                      <span className="text-[11px] text-gray-400 dark:text-gray-500">{account.description}</span>
                     </div>
                     {account.region && (
                       <span className={`mt-1.5 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium ${c.soft} ${c.text}`}>
@@ -79,18 +79,6 @@ export default function Login() {
               );
             })}
           </div>
-
-          <p className="mt-6 text-center text-xs text-gray-400">
-            Developed by{' '}
-            <a
-              href="https://sirahdigital.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-bold text-gray-500 hover:text-violet-600"
-            >
-              SIRAH DIGITAL
-            </a>
-          </p>
         </div>
       </div>
     </div>

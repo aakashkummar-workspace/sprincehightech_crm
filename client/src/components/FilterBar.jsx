@@ -9,7 +9,7 @@ export default function FilterBar({ filters, search, onSearchChange, searchPlace
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder={searchPlaceholder}
-          className="w-full max-w-xs rounded-full border border-gray-200 bg-white/70 px-4 py-1.5 text-sm"
+          className="w-full max-w-xs rounded-full border border-gray-200 bg-white/70 px-4 py-1.5 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
         />
       )}
       {filters.map((f) => (
@@ -17,7 +17,7 @@ export default function FilterBar({ filters, search, onSearchChange, searchPlace
           key={f.label}
           value={f.value}
           onChange={(e) => f.onChange(e.target.value)}
-          className="rounded-full border border-gray-200 bg-white/70 px-3 py-1.5 text-sm text-gray-700"
+          className="rounded-full border border-gray-200 bg-white/70 px-3 py-1.5 text-sm text-gray-700 dark:border-white/10 dark:bg-white/5 dark:text-gray-300"
         >
           <option value="">{f.label}: All</option>
           {f.options.map((opt) => (
@@ -31,7 +31,7 @@ export default function FilterBar({ filters, search, onSearchChange, searchPlace
             onSearchChange?.('');
             filters.forEach((f) => f.onChange(''));
           }}
-          className="rounded-full px-3 py-1.5 text-xs font-medium text-gray-500 hover:bg-white/60"
+          className="rounded-full px-3 py-1.5 text-xs font-medium text-gray-500 hover:bg-white/60 dark:text-gray-400 dark:hover:bg-white/10"
         >
           Clear filters
         </button>

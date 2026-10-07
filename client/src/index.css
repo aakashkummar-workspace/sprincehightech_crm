@@ -3,7 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --gradient-bg: linear-gradient(135deg, #ede9fe 0%, #e0f2fe 35%, #e0f7f5 70%, #ecfdf5 100%);
+  /* Warm cream → soft gold → soft red wash, echoing the logo's crown-red
+     and gold-coin palette instead of the generic violet/teal admin look. */
+  --gradient-bg: linear-gradient(135deg, #fff7ed 0%, #fef3e2 35%, #fdeee8 70%, #fdeaea 100%);
+  --glass-bg: rgba(255, 255, 255, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 8px 32px -8px rgba(31, 41, 55, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Dark mode: deep maroon/espresso gradient instead of pastel, dimmer glass
+   so text stays legible, blobs turned down further since dark backgrounds
+   show color saturation more readily than light ones. */
+:root.dark {
+  --gradient-bg: linear-gradient(135deg, #241510 0%, #2a1810 35%, #241212 70%, #1f1410 100%);
+  --glass-bg: rgba(35, 28, 28, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 html {
@@ -16,12 +31,13 @@ html::-webkit-scrollbar {
 }
 
 body {
-  @apply text-gray-900;
+  @apply text-gray-900 dark:text-gray-100;
   min-height: 100vh;
   background: var(--gradient-bg);
   background-attachment: fixed;
   position: relative;
   -ms-overflow-style: none; /* old Edge/IE */
+  transition: background 0.3s ease;
 }
 
 /* Faint glowing color blobs behind the glass layer — just enough for
@@ -35,58 +51,78 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(circle at 15% 20%, rgba(167, 139, 250, 0.22), transparent 45%),
-    radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.2), transparent 45%),
-    radial-gradient(circle at 25% 85%, rgba(74, 222, 128, 0.18), transparent 45%),
-    radial-gradient(circle at 90% 80%, rgba(244, 114, 182, 0.16), transparent 45%);
+    radial-gradient(circle at 15% 20%, rgba(250, 204, 21, 0.24), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(239, 68, 68, 0.18), transparent 45%),
+    radial-gradient(circle at 25% 85%, rgba(245, 158, 11, 0.2), transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(220, 38, 38, 0.16), transparent 45%);
+}
+:root.dark body::before {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(250, 204, 21, 0.1), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(239, 68, 68, 0.1), transparent 45%),
+    radial-gradient(circle at 25% 85%, rgba(245, 158, 11, 0.09), transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(220, 38, 38, 0.08), transparent 45%);
 }
 
 .status-badge {
   @apply inline-block rounded-full px-2.5 py-0.5 text-xs font-medium backdrop-blur-sm;
 }
-.status-new, .status-not_started { @apply bg-gray-100/80 text-gray-700; }
-.status-under_evaluation, .status-in_progress { @apply bg-blue-100/80 text-blue-700; }
-.status-bid_preparing, .status-pending { @apply bg-amber-100/80 text-amber-700; }
-.status-submitted { @apply bg-indigo-100/80 text-indigo-700; }
-.status-won, .status-paid, .status-completed { @apply bg-green-100/80 text-green-700; }
-.status-lost, .status-overdue { @apply bg-red-100/80 text-red-700; }
-.status-partially_paid, .status-on_hold { @apply bg-orange-100/80 text-orange-700; }
+.status-new, .status-not_started { @apply bg-gray-100/80 text-gray-700 dark:bg-gray-700/50 dark:text-gray-300; }
+.status-under_evaluation, .status-in_progress { @apply bg-blue-100/80 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300; }
+.status-bid_preparing, .status-pending { @apply bg-amber-100/80 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300; }
+.status-submitted { @apply bg-indigo-100/80 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300; }
+.status-won, .status-paid, .status-completed { @apply bg-green-100/80 text-green-700 dark:bg-green-500/20 dark:text-green-300; }
+.status-lost, .status-overdue { @apply bg-red-100/80 text-red-700 dark:bg-red-500/20 dark:text-red-300; }
+.status-partially_paid, .status-on_hold { @apply bg-orange-100/80 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300; }
 
 /* Glassmorphic surface used for cards, panels, nav shell.
    Lower fill opacity + visible blur lets the colorful background blobs show
    through; the inset highlight simulates a light catching the glass edge;
-   the layered shadow gives it lift off the page instead of looking flat. */
+   the layered shadow gives it lift off the page instead of looking flat.
+   Values come from CSS custom properties so dark mode just swaps the
+   :root.dark values above instead of needing a second rule here. */
 .glass {
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
   backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
-  box-shadow:
-    0 8px 32px -8px rgba(31, 41, 55, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: var(--glass-shadow);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .card {
   @apply glass rounded-2xl p-4;
 }
 
+/* Compact density: tightens card padding and table row spacing app-wide.
+   Toggled by adding/removing this class on <html> from Settings. */
+.density-compact .card {
+  @apply p-3;
+}
+.density-compact table td,
+.density-compact table th {
+  @apply py-1.5;
+}
+
 .btn {
   @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors;
 }
-.btn-primary { @apply bg-gray-900 text-white hover:bg-gray-800; }
-.btn-secondary { @apply border border-gray-200 bg-white/70 text-gray-700 hover:bg-white; }
+.btn-primary { @apply bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:text-white dark:hover:bg-red-500; }
+.btn-secondary { @apply border border-gray-200 bg-white/70 text-gray-700 hover:bg-white dark:border-white/10 dark:bg-white/10 dark:text-gray-200 dark:hover:bg-white/20; }
 
 /* Per-module colored button variants — mirrors each nav item's accent
    (see MODULE_COLORS in config/navigation.js) so each page's primary
-   action matches its module's identity rather than defaulting to black. */
-.btn-violet { @apply bg-violet-600 text-white hover:bg-violet-700; }
-.btn-sky { @apply bg-sky-600 text-white hover:bg-sky-700; }
+   action matches its module's identity. Class names kept from the old
+   rainbow palette to avoid touching every call site; colors now draw
+   from the logo's gold/red family. */
+.btn-violet { @apply bg-red-600 text-white hover:bg-red-700; }
+.btn-sky { @apply bg-yellow-500 text-white hover:bg-yellow-600; }
 .btn-amber { @apply bg-amber-500 text-white hover:bg-amber-600; }
-.btn-emerald { @apply bg-emerald-600 text-white hover:bg-emerald-700; }
+.btn-emerald { @apply bg-orange-700 text-white hover:bg-orange-800; }
 .btn-rose { @apply bg-rose-600 text-white hover:bg-rose-700; }
-.btn-cyan { @apply bg-cyan-600 text-white hover:bg-cyan-700; }
-.btn-slate { @apply bg-slate-800 text-white hover:bg-slate-900; }
-.btn-indigo { @apply bg-indigo-600 text-white hover:bg-indigo-700; }
+.btn-cyan { @apply bg-orange-500 text-white hover:bg-orange-600; }
+.btn-slate { @apply bg-red-900 text-white hover:bg-red-950; }
+.btn-indigo { @apply bg-red-800 text-white hover:bg-red-900; }
 
 /* Icon tile used on Dashboard KPI / module cards */
 .icon-tile {

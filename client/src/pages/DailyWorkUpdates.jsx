@@ -30,7 +30,9 @@ export default function DailyWorkUpdates() {
   const [approvalFilter, setApprovalFilter] = useState('');
   const [drilldown, setDrilldown] = useState(null);
 
-  const canEnter = user.role === 'site_supervisor' || user.role === 'project_manager';
+  // Director can do everything every other role can, including logging a
+  // daily work update directly (not just approving one).
+  const canEnter = ['site_supervisor', 'project_manager', 'director'].includes(user.role);
   const canApprove = ['project_manager', 'director', 'regional_head'].includes(user.role);
 
   function loadUpdates() {
@@ -84,10 +86,10 @@ export default function DailyWorkUpdates() {
   };
 
   const updateRow = (u) => (
-    <div key={u.id} className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/40 bg-white/40 px-3 py-2 text-sm">
+    <div key={u.id} className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/40 bg-white/40 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/10">
       <div className="min-w-0">
-        <div className="truncate font-medium text-gray-900">{formatDate(u.work_date)} — {projectLabel(u.project_id)}</div>
-        <div className="truncate text-xs text-gray-500">{u.work_done}</div>
+        <div className="truncate font-medium text-gray-900 dark:text-gray-100">{formatDate(u.work_date)} — {projectLabel(u.project_id)}</div>
+        <div className="truncate text-xs text-gray-500 dark:text-gray-400">{u.work_done}</div>
       </div>
       <StatusBadge status={u.approved_at ? 'completed' : 'pending'} />
     </div>
@@ -128,53 +130,53 @@ export default function DailyWorkUpdates() {
 
       {canEnter && (
         <form onSubmit={handleSubmit} className="card space-y-3 max-w-lg">
-          <h2 className="text-sm font-semibold text-gray-700">Log Today's Work</h2>
-          {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
-          {success && <div className="rounded-xl bg-green-50 px-3 py-2 text-sm text-green-700">{success}</div>}
+          <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Log Today's Work</h2>
+          {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400">{error}</div>}
+          {success && <div className="rounded-xl bg-green-50 px-3 py-2 text-sm text-green-700 dark:bg-emerald-500/10 dark:text-emerald-400">{success}</div>}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Project</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Project</label>
             <select
               required
               value={form.project_id}
               onChange={(e) => setForm({ ...form, project_id: e.target.value })}
-              className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
             >
               <option value="">Select project…</option>
               {projects.map((p) => <option key={p.id} value={p.id}>{p.client} — {p.site}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Date</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Date</label>
             <input
               type="date" required value={form.work_date}
               onChange={(e) => setForm({ ...form, work_date: e.target.value })}
-              className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Work Done</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Work Done</label>
             <textarea
               required rows={3} value={form.work_done}
               onChange={(e) => setForm({ ...form, work_done: e.target.value })}
-              className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Manpower Deployed</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Manpower Deployed</label>
               <input
                 type="number" value={form.manpower_deployed}
                 onChange={(e) => setForm({ ...form, manpower_deployed: e.target.value })}
-                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Materials Used</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Materials Used</label>
               <input
                 value={form.materials_used}
                 onChange={(e) => setForm({ ...form, materials_used: e.target.value })}
-                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
               />
             </div>
           </div>
@@ -183,7 +185,7 @@ export default function DailyWorkUpdates() {
       )}
 
       <div>
-        <h2 className="mb-3 text-sm font-semibold text-gray-700">Recent Updates</h2>
+        <h2 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">Recent Updates</h2>
 
         <div className="mb-4">
           <FilterBar
@@ -203,7 +205,7 @@ export default function DailyWorkUpdates() {
         </div>
 
         {filtered.length === 0 ? (
-          <div className="card text-sm text-gray-500">
+          <div className="card text-sm text-gray-500 dark:text-gray-400">
             {updates.length === 0 ? 'No updates yet.' : 'No updates match the current filters.'}
           </div>
         ) : (
@@ -212,13 +214,13 @@ export default function DailyWorkUpdates() {
               <div key={u.id} className="card">
                 <div className="mb-2 flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <div className="text-sm font-semibold text-gray-900">{formatDate(u.work_date)}</div>
-                    <div className="truncate text-xs text-gray-500">{projectLabel(u.project_id)}</div>
+                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">{formatDate(u.work_date)}</div>
+                    <div className="truncate text-xs text-gray-500 dark:text-gray-400">{projectLabel(u.project_id)}</div>
                   </div>
                   <StatusBadge status={u.approved_at ? 'completed' : 'pending'} />
                 </div>
-                <p className="mb-2 text-sm text-gray-700">{u.work_done}</p>
-                <div className="mb-2 text-xs text-gray-500">
+                <p className="mb-2 text-sm text-gray-700 dark:text-gray-300">{u.work_done}</p>
+                <div className="mb-2 text-xs text-gray-500 dark:text-gray-400">
                   {u.manpower_deployed} worker(s) deployed
                   {u.materials_used ? ` · ${u.materials_used}` : ''}
                 </div>
@@ -239,21 +241,21 @@ export default function DailyWorkUpdates() {
       {approvingId && (
         <Modal title="Approve Daily Work Update" onClose={() => setApprovingId(null)}>
           <div className="space-y-3">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
               How much should this update add to the project's overall progress percentage?
             </p>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Progress % to add</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Progress % to add</label>
               <input
                 type="number"
                 autoFocus
                 value={progressDelta}
                 onChange={(e) => setProgressDelta(e.target.value)}
                 placeholder="e.g. 2"
-                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-xl border border-gray-200 bg-white/70 px-3 py-2 text-sm dark:border-white/10 dark:bg-white/5 dark:text-gray-100"
               />
             </div>
-            {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>}
+            {error && <div className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-500/10 dark:text-red-400">{error}</div>}
             <button className="btn btn-cyan w-full" onClick={confirmApprove}>Confirm Approval</button>
           </div>
         </Modal>
@@ -262,7 +264,7 @@ export default function DailyWorkUpdates() {
       {drilldown && (
         <Modal title={drilldown.title} onClose={() => setDrilldown(null)}>
           {drilldown.rows.length === 0 ? (
-            <p className="py-6 text-center text-sm text-gray-500">No records.</p>
+            <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">No records.</p>
           ) : (
             <div className="space-y-1.5">{drilldown.rows}</div>
           )}

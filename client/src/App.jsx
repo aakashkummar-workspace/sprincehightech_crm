@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './auth/AuthContext.jsx';
+import { ThemeProvider } from './theme/ThemeContext.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import Layout from './components/Layout.jsx';
+import SiteFooter from './components/SiteFooter.jsx';
 
 import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
@@ -15,9 +17,11 @@ import Employees from './pages/Employees.jsx';
 import Finance from './pages/Finance.jsx';
 import DailyWorkUpdates from './pages/DailyWorkUpdates.jsx';
 import Reports from './pages/Reports.jsx';
+import Settings from './pages/Settings.jsx';
 
 export default function App() {
   return (
+    <ThemeProvider>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -42,11 +46,14 @@ export default function App() {
             <Route path="/finance" element={<Finance />} />
             <Route path="/daily-updates" element={<DailyWorkUpdates />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/settings" element={<Settings />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
+        <SiteFooter />
       </BrowserRouter>
     </AuthProvider>
+    </ThemeProvider>
   );
 }

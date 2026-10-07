@@ -46,7 +46,7 @@ export default function Reports() {
     })();
   }, []);
 
-  if (loading) return <div className="text-sm text-gray-500">Loading reports…</div>;
+  if (loading) return <div className="text-sm text-gray-500 dark:text-gray-400">Loading reports…</div>;
 
   // --- Tender win rate ---
   const closedTenders = tenders.filter((t) => ['won', 'lost'].includes(t.status));
@@ -195,7 +195,7 @@ export default function Reports() {
         rows={invoices}
       />
 
-      <div className="text-xs text-gray-400">Totals above reflect the data currently loaded — {formatDate(new Date())}.</div>
+      <div className="text-xs text-gray-400 dark:text-gray-500">Totals above reflect the data currently loaded — {formatDate(new Date())}.</div>
     </div>
   );
 }
@@ -205,8 +205,8 @@ function ReportSection({ title, subtitle, filename, columns, rows, emptyText = '
     <div className="card">
       <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="text-sm font-semibold text-gray-800">{title}</h2>
-          <p className="text-xs text-gray-500">{subtitle}</p>
+          <h2 className="text-sm font-semibold text-gray-800 dark:text-gray-200">{title}</h2>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{subtitle}</p>
         </div>
         <div className="flex shrink-0 gap-2">
           <button className="btn btn-secondary text-xs" onClick={() => downloadCsv(filename, columns, rows)}>
@@ -222,22 +222,22 @@ function ReportSection({ title, subtitle, filename, columns, rows, emptyText = '
       </div>
 
       {rows.length === 0 ? (
-        <p className="text-sm text-gray-500">{emptyText}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{emptyText}</p>
       ) : (
         <div className="overflow-x-auto scrollbar-hide">
-          <table className="min-w-full divide-y divide-white/40 text-sm">
-            <thead className="bg-white/20">
-              <tr className="text-left text-gray-600">
+          <table className="min-w-full divide-y divide-white/40 text-sm dark:divide-white/10">
+            <thead className="bg-white/20 dark:bg-white/5">
+              <tr className="text-left text-gray-600 dark:text-gray-300">
                 {columns.map((c) => (
                   <th key={c.label} className="whitespace-nowrap py-2 pl-3 pr-4 first:pl-3">{c.label}</th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/30">
+            <tbody className="divide-y divide-white/30 dark:divide-white/10">
               {rows.map((row, i) => (
                 <tr key={row.id || row.region || row.key || i}>
                   {columns.map((c) => (
-                    <td key={c.label} className="whitespace-nowrap py-2 pl-3 pr-4 capitalize first:font-medium first:text-gray-800">
+                    <td key={c.label} className="whitespace-nowrap py-2 pl-3 pr-4 capitalize first:font-medium first:text-gray-800 dark:first:text-gray-200">
                       {c.value(row)}
                     </td>
                   ))}

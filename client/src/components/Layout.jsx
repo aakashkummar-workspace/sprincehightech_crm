@@ -4,6 +4,7 @@ import { useAuth } from '../auth/AuthContext.jsx';
 import { NAV_ITEMS, NAV_GROUPS, ROLE_LABELS, REGION_LABELS, MODULE_COLORS } from '../config/navigation.js';
 import ReminderBell from './ReminderBell.jsx';
 import NavIcon from './NavIcons.jsx';
+import ThemeToggle from './ThemeToggle.jsx';
 import logo from '../assets/sprince-logo.png';
 
 const COLLAPSE_KEY = 'sprince_sidebar_collapsed';
@@ -38,7 +39,7 @@ export default function Layout() {
         if (groupItems.length === 0) return null;
         return (
           <div key={group}>
-            <div className="px-4 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400">{group}</div>
+            <div className="px-4 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">{group}</div>
             <div className="space-y-0.5">
               {groupItems.map((item) => {
                 const c = MODULE_COLORS[item.color];
@@ -49,7 +50,7 @@ export default function Layout() {
                     onClick={() => setMobileNavOpen(false)}
                     className={({ isActive }) =>
                       `flex items-center gap-2.5 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                        isActive ? `${c.solid} text-white shadow-lg` : 'text-gray-700 hover:bg-white/40'
+                        isActive ? `${c.solid} text-white shadow-lg` : 'text-gray-700 hover:bg-white/40 dark:text-gray-300 dark:hover:bg-white/10'
                       }`
                     }
                   >
@@ -78,7 +79,7 @@ export default function Layout() {
             title={item.label}
             aria-label={item.label}
             className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors ${
-              isActive ? `${c.solid} text-white shadow-lg` : 'text-gray-500 hover:bg-white/50'
+              isActive ? `${c.solid} text-white shadow-lg` : 'text-gray-500 hover:bg-white/50 dark:text-gray-400 dark:hover:bg-white/10'
             }`}
           >
             <NavIcon name={item.icon} />
@@ -90,24 +91,40 @@ export default function Layout() {
 
   // Account block, pinned to the bottom of the sidebar instead of the top header.
   const accountBlock = (
-    <div className="space-y-2 border-t border-white/40 pt-3">
+    <div className="space-y-2 border-t border-white/40 pt-3 dark:border-white/10">
       <div className="flex items-center justify-between gap-2 px-1">
-        <div className="w-fit rounded-full bg-white/70 px-3 py-1 text-xs text-gray-600">
+        <div className="w-fit rounded-full bg-white/70 px-3 py-1 text-xs text-gray-600 dark:bg-white/10 dark:text-gray-300">
           {ROLE_LABELS[user.role]}
           {user.region ? ` · ${REGION_LABELS[user.region]}` : ' · All Regions'}
         </div>
         <ReminderBell />
       </div>
       <div className="flex items-center gap-2 px-1">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-900 text-xs font-semibold text-white">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-red-600 text-xs font-semibold text-white shadow-sm">
           {user.name.split(' ').map((n) => n[0]).slice(0, 2).join('')}
         </div>
-        <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-900">{user.name}</span>
+        <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-900 dark:text-gray-100">{user.name}</span>
+      </div>
+      <div className="space-y-0.5 rounded-2xl bg-white/40 p-1 dark:bg-white/5">
+        <NavLink
+          to="/settings"
+          onClick={() => setMobileNavOpen(false)}
+          className={({ isActive }) =>
+            `flex w-full items-center gap-2 rounded-xl px-3 py-1.5 text-sm font-medium transition-colors ${
+              isActive ? 'bg-red-600 text-white shadow-sm' : 'text-gray-500 hover:bg-white/60 dark:text-gray-300 dark:hover:bg-white/10'
+            }`
+          }
+        >
+          <NavIcon name="gear" className="h-4 w-4" />
+          <span>Settings</span>
+        </NavLink>
+        <ThemeToggle />
       </div>
       <button
-        className="btn btn-secondary w-full text-sm"
+        className="flex w-full items-center justify-center gap-2 rounded-full bg-rose-50 px-3 py-2 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:hover:bg-rose-500/20"
         onClick={() => { logout(); navigate('/login'); }}
       >
+        <LogoutIcon />
         Log out
       </button>
     </div>
@@ -115,18 +132,31 @@ export default function Layout() {
 
   // Compact rail's account footer: avatar only, with a logout icon button.
   const accountBlockRail = (
-    <div className="flex flex-col items-center gap-2 border-t border-white/40 pt-3">
+    <div className="flex flex-col items-center gap-2 border-t border-white/40 pt-3 dark:border-white/10">
       <div
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-900 text-xs font-semibold text-white"
+        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-red-600 text-xs font-semibold text-white shadow-sm"
         title={user.name}
       >
         {user.name.split(' ').map((n) => n[0]).slice(0, 2).join('')}
       </div>
+      <NavLink
+        to="/settings"
+        title="Settings"
+        aria-label="Settings"
+        className={({ isActive }) =>
+          `flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+            isActive ? 'bg-red-600 text-white shadow-sm' : 'text-gray-500 hover:bg-white/50 dark:text-gray-400 dark:hover:bg-white/10'
+          }`
+        }
+      >
+        <NavIcon name="gear" className="h-4 w-4" />
+      </NavLink>
+      <ThemeToggle compact />
       <button
         onClick={() => { logout(); navigate('/login'); }}
         title="Log out"
         aria-label="Log out"
-        className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-white/50"
+        className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-white/50 dark:text-gray-400 dark:hover:bg-white/10"
       >
         <LogoutIcon />
       </button>
@@ -141,8 +171,8 @@ export default function Layout() {
       <div className="flex items-center gap-2 px-2 pb-4">
         <img src={logo} alt="S Prince Hightech" className="h-9 w-9 shrink-0 object-contain" />
         <div>
-          <div className="text-sm font-semibold text-gray-900">S Prince Hightech</div>
-          <div className="text-xs text-gray-500">Management CRM</div>
+          <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">S Prince Hightech</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400">Management CRM</div>
         </div>
       </div>
       {navLinksGrouped}
@@ -166,8 +196,8 @@ export default function Layout() {
             <img src={logo} alt="S Prince Hightech" className="h-9 w-9 shrink-0 object-contain" />
             {!collapsed && (
               <div>
-                <div className="text-sm font-semibold text-gray-900">S Prince Hightech</div>
-                <div className="text-xs text-gray-500">Management CRM</div>
+                <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">S Prince Hightech</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Management CRM</div>
               </div>
             )}
           </div>
@@ -179,7 +209,7 @@ export default function Layout() {
           <button
             onClick={toggleCollapsed}
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className={`mt-2 flex items-center justify-center rounded-full text-gray-500 hover:bg-white/50 ${
+            className={`mt-2 flex items-center justify-center rounded-full text-gray-500 hover:bg-white/50 dark:text-gray-400 dark:hover:bg-white/10 ${
               collapsed ? 'h-8 w-8' : 'w-full gap-2 px-3 py-1.5 text-xs font-medium'
             }`}
           >
@@ -194,13 +224,14 @@ export default function Layout() {
       <div className="glass mb-4 flex items-center justify-between rounded-2xl p-3 lg:hidden">
         <button
           onClick={() => setMobileNavOpen(true)}
-          className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-white/40"
+          className="flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-white/40 dark:text-gray-200 dark:hover:bg-white/10"
           aria-label="Open menu"
         >
           <MenuIcon />
           <span>{currentLabel}</span>
         </button>
         <div className="flex items-center gap-2">
+          <ThemeToggle compact />
           <ReminderBell />
           <img src={logo} alt="S Prince Hightech" className="h-7 w-7 object-contain" />
         </div>
@@ -214,7 +245,7 @@ export default function Layout() {
             <div className="mb-2 flex justify-end">
               <button
                 onClick={() => setMobileNavOpen(false)}
-                className="rounded-full p-1.5 text-gray-500 hover:bg-white/50"
+                className="rounded-full p-1.5 text-gray-500 hover:bg-white/50 dark:text-gray-400 dark:hover:bg-white/10"
                 aria-label="Close menu"
               >
                 <CloseIcon />
@@ -226,8 +257,9 @@ export default function Layout() {
       )}
 
       {/* Reserves the fixed sidebar's width + offsets on desktop (left-4 + sidebar width + gap)
-          so content doesn't render underneath it. Adjusts when collapsed. */}
-      <main className={`min-w-0 transition-[margin] duration-200 ${collapsed ? 'lg:ml-[104px]' : 'lg:ml-[288px]'}`}>
+          so content doesn't render underneath it. Adjusts when collapsed.
+          pb-8 keeps the last card clear of the fixed SiteFooter bar. */}
+      <main className={`min-w-0 pb-8 transition-[margin] duration-200 ${collapsed ? 'lg:ml-[104px]' : 'lg:ml-[288px]'}`}>
         <Outlet />
       </main>
     </div>
