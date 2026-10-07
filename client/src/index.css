@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gradient-bg: linear-gradient(135deg, #ede9fe 0%, #e0f2fe 35%, #e0f7f5 70%, #ecfdf5 100%);
+}
+
+html {
+  /* Firefox */
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  /* Chrome, Edge, Safari */
+  display: none;
+}
+
+body {
+  @apply text-gray-900;
+  min-height: 100vh;
+  background: var(--gradient-bg);
+  background-attachment: fixed;
+  position: relative;
+  -ms-overflow-style: none; /* old Edge/IE */
+}
+
+/* Faint glowing color blobs behind the glass layer — just enough for
+   backdrop-blur to visibly refract something, without tinting the whole
+   page. Keep these subtle; color should live in the accent chips/buttons,
+   not flood the background. Fixed so they stay put as panels scroll over them. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(167, 139, 250, 0.22), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.2), transparent 45%),
+    radial-gradient(circle at 25% 85%, rgba(74, 222, 128, 0.18), transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(244, 114, 182, 0.16), transparent 45%);
+}
+
+.status-badge {
+  @apply inline-block rounded-full px-2.5 py-0.5 text-xs font-medium backdrop-blur-sm;
+}
+.status-new, .status-not_started { @apply bg-gray-100/80 text-gray-700; }
+.status-under_evaluation, .status-in_progress { @apply bg-blue-100/80 text-blue-700; }
+.status-bid_preparing, .status-pending { @apply bg-amber-100/80 text-amber-700; }
+.status-submitted { @apply bg-indigo-100/80 text-indigo-700; }
+.status-won, .status-paid, .status-completed { @apply bg-green-100/80 text-green-700; }
+.status-lost, .status-overdue { @apply bg-red-100/80 text-red-700; }
+.status-partially_paid, .status-on_hold { @apply bg-orange-100/80 text-orange-700; }
+
+/* Glassmorphic surface used for cards, panels, nav shell.
+   Lower fill opacity + visible blur lets the colorful background blobs show
+   through; the inset highlight simulates a light catching the glass edge;
+   the layered shadow gives it lift off the page instead of looking flat. */
+.glass {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow:
+    0 8px 32px -8px rgba(31, 41, 55, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.card {
+  @apply glass rounded-2xl p-4;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors;
+}
+.btn-primary { @apply bg-gray-900 text-white hover:bg-gray-800; }
+.btn-secondary { @apply border border-gray-200 bg-white/70 text-gray-700 hover:bg-white; }
+
+/* Per-module colored button variants — mirrors each nav item's accent
+   (see MODULE_COLORS in config/navigation.js) so each page's primary
+   action matches its module's identity rather than defaulting to black. */
+.btn-violet { @apply bg-violet-600 text-white hover:bg-violet-700; }
+.btn-sky { @apply bg-sky-600 text-white hover:bg-sky-700; }
+.btn-amber { @apply bg-amber-500 text-white hover:bg-amber-600; }
+.btn-emerald { @apply bg-emerald-600 text-white hover:bg-emerald-700; }
+.btn-rose { @apply bg-rose-600 text-white hover:bg-rose-700; }
+.btn-cyan { @apply bg-cyan-600 text-white hover:bg-cyan-700; }
+.btn-slate { @apply bg-slate-800 text-white hover:bg-slate-900; }
+.btn-indigo { @apply bg-indigo-600 text-white hover:bg-indigo-700; }
+
+/* Icon tile used on Dashboard KPI / module cards */
+.icon-tile {
+  @apply flex h-10 w-10 items-center justify-center rounded-xl text-lg;
+}
+
+/* Reusable: hide an element's own scrollbar while it stays scrollable
+   (wheel/trackpad/touch/keyboard all still work). Apply to any inner
+   overflow-auto/overflow-y-auto/overflow-x-auto container. */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* old Edge/IE */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari */
+}
